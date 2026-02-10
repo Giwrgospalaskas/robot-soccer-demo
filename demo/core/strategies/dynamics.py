@@ -15,12 +15,12 @@ class DifferentialDriveDynamics(DynamicsModelInterface):
 
     def propagate(self, state, action, dt):
         # state: [x, y, theta]
-        # action: [v_left, v_right]
+        # action: [v, omega]
         x, y, theta = state
-        vl, vr = action
+        v,w = action
 
-        v = (self.r / 2.0) * (vr + vl)
-        w = (self.r / self.b) * (vr - vl)
+        vL = (1/self.r)*(v-w*self.b/2)
+        vR = (1/self.r)*(v+w*self.b/2) 
 
         # Discrete time update (Page 2 of PDF)
         new_x = x + v * np.cos(theta) * dt

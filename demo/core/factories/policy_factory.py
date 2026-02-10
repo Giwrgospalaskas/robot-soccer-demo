@@ -15,9 +15,9 @@ class PolicyFactory():
             dtype = config.get("policy")
 
             if dtype == "GoToPointPolicy":
-                return GoToPointPolicy()
+                return GoToPointPolicy(params["robot_drive_k"], params["max_speed"], params["min_speed"])
             elif dtype == "FormationConsensusPolicy":
-                return FormationConsensusPolicy()
+                return FormationConsensusPolicy(params["robot_drive_k"], params["max_speed"], params["min_speed"])
             else:
                 raise ValueError(f"Unknown policy: {config['policy']}")
         

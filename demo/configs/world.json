@@ -1,7 +1,9 @@
 {
-    "parameters":
-        {
-            "width": 400,
-            "heigth": 700
-        }
+    "dimensions":
+    {
+        "width":100.0,
+        "height":100.0
+    },
+    "robots_per_team":3,
+    "match_length":1000
 }
