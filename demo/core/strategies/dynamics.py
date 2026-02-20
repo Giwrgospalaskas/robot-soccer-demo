@@ -21,8 +21,7 @@ class DifferentialDriveDynamics(DynamicsModelInterface):
 
         vL = (1/self.r)*(v-w*self.b/2)
         vR = (1/self.r)*(v+w*self.b/2) 
-
-        # Discrete time update (Page 2 of PDF)
+        
         new_x = x + v * np.cos(theta) * dt
         new_y = y + v * np.sin(theta) * dt
         new_theta = theta + w * dt

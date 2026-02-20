@@ -4,24 +4,32 @@ from entities.ball import Ball
 
 
 class SoccerSimulator():
-    def __init__(self, world,dynamics, policies, observers, dt=0.1):
+    def __init__(self, world,referee,dynamics, policies, observers):
         self.world = world
+        self.referee = referee
         self.ball = self.world.state["ball"]
         self.teamA = self.world.state["teamA"]
         self.teamB = self.world.state["teamB"]
         self.dims = self.world.state["dims"]
+        self.goalA = self.world.state["goalA"]
+        self.goalB = self.world.state["goalB"]
         self.dynamics = dynamics
-        self.policies = policies
+        self.policy = policies
         self.observers = observers
-        self.dt = dt
+        self.dt = self.world.state["dt"]
 
     def step(self):
         # 1. Compute actions from policies
         # (Assuming policies return a list of actions for the robots)
+
         actionsA = []
         actionsB = []
-        actionsA.extend(self.policies.compute_actions(self.teamA, self.ball))
-        actionsB.extend(self.policies.compute_actions(self.teamB, self.ball))
+
+        current_cursor = self.observers.observers[0].cursor_pos
+
+        actionsA.extend(self.policy.compute_actions(self.teamA, self.ball))
+        actionsB.extend(self.policy.compute_actions(self.teamB, self.ball))
+
 
         # 2. Propagate robot states
         for i, robot in enumerate(self.teamA):
@@ -38,8 +46,9 @@ class SoccerSimulator():
         
 
         # 4. Enforce world rules (Boundaries, Goals - to be implemented)
-        # self._enforce_boundaries()
+        self.referee.enforce_rules(self.world.state)
 
         # 5. Notify observers
-        for observer in self.observers:
-            observer.update(self.world.state)
+        self.observers.notify(self.world.state)
+
+    

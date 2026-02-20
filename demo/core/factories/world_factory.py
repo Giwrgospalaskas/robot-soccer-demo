@@ -9,7 +9,15 @@ class WorldBuilder():
         try:
             with open(self.conf_path, 'r') as f:
                 config = json.load(f)
-            return World(config["dimensions"], config["robots_per_team"], config["match_length"])
+            return World(
+                dimensions = config["dimensions"],
+                ball = config["ball"],
+                robot = config["robot"],
+                robots_per_team = config["robots_per_team"], 
+                goal = config["goal"],
+                match_length = config["match_length"],
+                dt = config["dt"]
+                )
         
         except FileNotFoundError:
             print("Error: The file 'world.json' was not found.")

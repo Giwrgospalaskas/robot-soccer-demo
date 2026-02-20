@@ -1,9 +1,12 @@
 {
-    "policy": "GoToPointPolicy",
+    "Policy": "FormationConsensusPolicy",
+
     "parameters":
         {
             "robot_drive_k": 2.0,
             "max_speed": 10.0,
-            "min_speed": 0.0
+            "min_speed": 0.0,
+            "kick_radius": 1.0,
+            "kick_force":2.0
         }
 }

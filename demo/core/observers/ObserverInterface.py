@@ -4,16 +4,24 @@ class ObserverInterface():
     
     
     def attach(self, observer):
-        self.observers.append(observer)
-
+        try:
+            self.observers.append(observer)
+            print(f"attached {type(observer).__name__}")
+        except Exception as e:
+            print(f"Error attaching {type(observer).__name__}: {e}")
+            
     
     def detach(self, observer):
-        self.observers.remove(observer)
+        try:
+            self.observers.remove(observer)
+            print(f"detached {type(observer).__name__}")
+        except Exception as e:
+            print(f"Error detaching {type(observer).__name__}: {e}")
 
     
-    def notify(self):
+    def notify(self, state):
         for observer in self.observers:
-            observer.update(self)
+            observer.update(state)
     
-    def update(self, subject):
+    def update(self, state):
         raise NotImplementedError
