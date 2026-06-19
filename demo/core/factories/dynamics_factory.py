@@ -1,5 +1,7 @@
 import json
-from strategies.dynamics import DifferentialDriveDynamics, DiffernetialDriveDynamicsWithActuationNoise
+from strategies.Dynamics.DifferentialDrive import DifferentialDriveDynamics
+from strategies.Dynamics.DifferentialModelWithNoise import DiffernetialDriveDynamicsWithActuationNoise
+
 
 
 class DynamicsFactory():

@@ -1,7 +1,30 @@
 {
-    "parameters":
-        {
-            "width": 400,
-            "heigth": 700
-        }
+    "dimensions":
+    {
+        "width":250.0,
+        "height":150.0
+    },
+    
+    "ball":
+    {   
+        "radius":2.0,
+        "friction":0.7
+    },
+
+    "robot":
+    {
+        "body_radius":4.0 
+    },
+
+    "robots_per_team":1,
+    
+    
+    "goal":
+    {
+        "length":50.0,
+        "height":4.0
+    },
+    
+    "match_length":1000,
+    "dt":0.1
 }
