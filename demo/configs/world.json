@@ -1,24 +1,22 @@
 {
     "dimensions":
     {
-        "width":150.0,
-        "height":200.0
+        "width":250.0,
+        "height":150.0
     },
     
     "ball":
     {   
-        "radius":1.0,
-        "friction":2
+        "radius":2.0,
+        "friction":0.99
     },
 
     "robot":
     {
-        "wheel_radius":1.0,
-        "wheel_base":1.0,
-        "body_radius":2.0 
+        "body_radius":4.0 
     },
 
-    "robots_per_team":3,
+    "robots_per_team":2,
     
     
     "goal":

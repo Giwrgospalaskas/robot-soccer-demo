@@ -12,7 +12,7 @@ class VisualizerObserver(ObserverInterface):
         self.ax.set_ylim(0.0,state["dims"]["height"]) 
         self.ax.set_aspect('equal')
         
-        self.ax.set_xticks([])  #Remove to see the numbers on the axis
+        self.ax.set_xticks([])  #Remove to see the numbers on the axis, runs better if you dont for some reason
         self.ax.set_yticks([])
         
         colors = {
@@ -20,14 +20,14 @@ class VisualizerObserver(ObserverInterface):
             "B": "red"
         }
 
-        self.cursor_pos = np.array([0.0, 0.0]) # Initialize at origin
-        self.fig.canvas.mpl_connect('motion_notify_event', self.on_move)
+        # self.cursor_pos = np.array([0.0, 0.0]) # Initialize at origin
+        # self.fig.canvas.mpl_connect('motion_notify_event', self.on_move)
         
         
         #TeamA
         self.robots_team_a = [self.ax.add_patch(patches.Circle(
             (0,0), 
-            state["robot_body_radius"], 
+            state["teamA"][0].body_radius, 
             color = colors["A"])) 
             for _ in range(state["robots_per_team"])] 
         
@@ -35,7 +35,7 @@ class VisualizerObserver(ObserverInterface):
         #TeamB
         self.robots_team_b = [self.ax.add_patch(patches.Circle(
             (0,0),
-            state["robot_body_radius"], 
+            state["teamB"][0].body_radius, 
             color = colors["B"])) 
             for _ in range(state["robots_per_team"])] 
         
@@ -60,18 +60,17 @@ class VisualizerObserver(ObserverInterface):
         
         #GoalpostA
         self.goal_team_a = self.ax.add_patch(patches.Rectangle(
-            (state["goalA"].px, state["goalA"].py),
-            state["goalA"].size["length"],
-            state["goalA"].size["height"], 
+            (state["goalA"].position[0], state["goalA"].position[1]),
+            state["goalA"].size["height"],
+            state["goalA"].size["length"], 
             color=colors["A"]))
         
         
         #GoalpostB
         self.goal_team_b = self.ax.add_patch(patches.Rectangle(
-            ((state["dims"]["width"]-state["goalB"].size["length"])/2,
-             state["dims"]["height"]-state["goalB"].size["height"]),
-             state["goalB"].size["length"],
-             state["goalB"].size["height"], 
+             (state["goalB"].position[0], state["goalB"].position[1]),
+             state["goalB"].size["height"],
+             state["goalB"].size["length"], 
              color=colors["B"]))
         
         
@@ -81,7 +80,7 @@ class VisualizerObserver(ObserverInterface):
             state["ball_radius"], 
             color='black')) 
         
-        plt.ion() # Turn on interactive mode
+        plt.ion() 
         plt.show()
 
 
@@ -126,10 +125,10 @@ class VisualizerObserver(ObserverInterface):
         self.fig.canvas.flush_events()
 
 
-    def on_move(self, event):
-        if event.xdata is not None and event.ydata is not None:
-            self.cursor_pos[0] = event.xdata
-            self.cursor_pos[1] = event.ydata
+    # def on_move(self, event):
+    #     if event.xdata is not None and event.ydata is not None:
+    #         self.cursor_pos[0] = event.xdata
+    #         self.cursor_pos[1] = event.ydata
 
     
     

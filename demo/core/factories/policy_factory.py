@@ -1,5 +1,7 @@
 import json
-from strategies.policies import GoToPointPolicy, FormationConsensusPolicy
+from strategies.Policies.GoToPoint import GoToPointPolicy
+from strategies.Policies.FormationConsensus import FormationConsensusPolicy
+
 
 
 
@@ -16,15 +18,17 @@ class PolicyFactory():
             policy = config.get("Policy")
 
             if policy == "GoToPointPolicy":
-                return GoToPointPolicy(params["robot_drive_k"], 
+                return GoToPointPolicy(params["robot_turn_drive_k"], 
                                        params["max_speed"], 
                                        params["min_speed"], 
                                        params["kick_radius"], 
                                        params["kick_force"])
             elif policy == "FormationConsensusPolicy":
-                return FormationConsensusPolicy(params["robot_drive_k"], 
+                return FormationConsensusPolicy(params["robot_turn_drive_k"], 
                                                 params["max_speed"], 
-                                                params["min_speed"])
+                                                params["min_speed"],
+                                                params["kick_radius"], 
+                                                params["kick_force"])
             else:
                 raise ValueError(f"Unknown policy: {config['policy']}")
             
