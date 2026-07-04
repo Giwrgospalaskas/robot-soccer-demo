@@ -1,0 +1,13 @@
+{
+    "TeamAPolicy": "SoccerHeuristicPolicy",
+    "TeamBPolicy": "SoccerHeuristicPolicy",
+
+    "parameters":
+        {
+            "robot_turn_drive_k": 4.0,
+            "max_speed": 8.0,
+            "min_speed": 0.0,
+            "kick_radius": 8.0,
+            "kick_force":20.0
+        }
+}
