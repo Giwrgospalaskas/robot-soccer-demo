@@ -2,90 +2,96 @@ from observers.ObserverInterface import ObserverInterface
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
-
+from mplsoccer import Pitch  
 
 class VisualizerObserver(ObserverInterface):
 
     def __init__(self, state):
-        self.fig, self.ax = plt.subplots()
-        self.ax.set_xlim(0.0,state["dims"]["width"]) 
-        self.ax.set_ylim(0.0,state["dims"]["height"]) 
+        
+        self.pitch = Pitch(pitch_type='custom', 
+                           pitch_length=state["dims"]["width"], 
+                           pitch_width=state["dims"]["height"],
+                           pitch_color='#4d784e',     
+                           line_color='white',        
+                           stripe=True,               
+                           stripe_color='#476f48')    
+        
+        
+        self.fig, self.ax = self.pitch.draw(figsize=(10, 6))
         self.ax.set_aspect('equal')
         
-        self.ax.set_xticks([])  #Remove to see the numbers on the axis, runs better if you dont for some reason
-        self.ax.set_yticks([])
         
         colors = {
-            "A": "blue",
-            "B": "red"
+            "A": "#1e90ff", 
+            "B": "#ff4757"   
         }
-
-        # self.cursor_pos = np.array([0.0, 0.0]) # Initialize at origin
-        # self.fig.canvas.mpl_connect('motion_notify_event', self.on_move)
         
         
-        #TeamA
         self.robots_team_a = [self.ax.add_patch(patches.Circle(
             (0,0), 
             state["teamA"][0].body_radius, 
-            color = colors["A"])) 
+            color=colors["A"],
+            zorder=3)) 
             for _ in range(state["robots_per_team"])] 
         
         
-        #TeamB
         self.robots_team_b = [self.ax.add_patch(patches.Circle(
             (0,0),
             state["teamB"][0].body_radius, 
-            color = colors["B"])) 
+            color=colors["B"],
+            zorder=3)) 
             for _ in range(state["robots_per_team"])] 
         
-        #Arrows
+       
         self.arrow_team_a = self.ax.quiver(np.zeros(state["robots_per_team"]),
                                             np.zeros(state["robots_per_team"]),
                                             np.zeros(state["robots_per_team"]),
                                             np.zeros(state["robots_per_team"]), 
                                             color=colors["A"], 
-                                            scale=18)
-        
+                                            scale=18,
+                                            zorder=4)
         
         self.arrow_team_b = self.ax.quiver(np.zeros(state["robots_per_team"]),
                                             np.zeros(state["robots_per_team"]),
                                             np.zeros(state["robots_per_team"]),
                                             np.zeros(state["robots_per_team"]), 
                                             color=colors["B"], 
-                                            scale=18)
-       
-
-
+                                            scale=18,
+                                            zorder=4)
         
-        #GoalpostA
+        
         self.goal_team_a = self.ax.add_patch(patches.Rectangle(
             (state["goalA"].position[0], state["goalA"].position[1]),
             state["goalA"].size["height"],
             state["goalA"].size["length"], 
-            color=colors["A"]))
+            edgecolor='white',
+            facecolor='#ffffff33', 
+            linewidth=2,
+            zorder=2))
         
         
-        #GoalpostB
         self.goal_team_b = self.ax.add_patch(patches.Rectangle(
              (state["goalB"].position[0], state["goalB"].position[1]),
              state["goalB"].size["height"],
              state["goalB"].size["length"], 
-             color=colors["B"]))
+             edgecolor='white',
+             facecolor='#ffffff33',
+             linewidth=2,
+             zorder=2))
         
         
-        #Ball
         self.ball_artist = self.ax.add_patch(patches.Circle(
             (0,0), 
             state["ball_radius"], 
-            color='black')) 
+            edgecolor='black',
+            facecolor='white',
+            linewidth=1.5,
+            zorder=5)) 
         
+        self.fig.canvas.manager.set_window_title('Robot Soccer Arena')
         plt.ion() 
         plt.show()
 
-
-
-    
     def update(self, state):
         x_positions_team_a = []
         y_positions_team_a = []
@@ -112,23 +118,13 @@ class VisualizerObserver(ObserverInterface):
             v_directions_team_b.append(np.sin(robot.state[2]))
         
         self.arrow_team_a.set_offsets(np.hstack([np.array(x_positions_team_a)[:,None], 
-                                         np.array(y_positions_team_a)[:,None]]))
+                                                 np.array(y_positions_team_a)[:,None]]))
         self.arrow_team_a.set_UVC(u_directions_team_a, v_directions_team_a)
         
         self.arrow_team_b.set_offsets(np.hstack([np.array(x_positions_team_b)[:,None], 
-                                         np.array(y_positions_team_b)[:,None]]))
+                                                 np.array(y_positions_team_b)[:,None]]))
         self.arrow_team_b.set_UVC(u_directions_team_b, v_directions_team_b)
-        
         
         self.ball_artist.center = (state["ball"].position[0], state["ball"].position[1])
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-
-
-    # def on_move(self, event):
-    #     if event.xdata is not None and event.ydata is not None:
-    #         self.cursor_pos[0] = event.xdata
-    #         self.cursor_pos[1] = event.ydata
-
-    
-    
